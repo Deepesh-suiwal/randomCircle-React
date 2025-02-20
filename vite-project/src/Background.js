@@ -1,5 +1,4 @@
 const colors = [
-    "#fff",
     "#FFBF00",
     "#FF7F50",
     "#DE3163",

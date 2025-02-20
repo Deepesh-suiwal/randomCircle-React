@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import colors from "../Background.js";
-// import "./Main.css";
 
 function Main() {
   const [circles, setCircles] = useState([]);
+  const [undo, setUndo] = useState([]);
+  const [redo, setRedo] = useState([]);
+
   function handleClick(e) {
     const circle = {
       id: Date.now(),
@@ -13,13 +15,54 @@ function Main() {
     };
     setCircles([...circles, circle]);
   }
-  console.log(circles);
+
+  function popCircle() {
+    setCircles((prevCircles) => {
+      const newCircles = [...prevCircles];
+      const lastElem = newCircles.pop();
+      setUndo((prevUndo) => [...prevUndo, lastElem]);
+      return newCircles;
+    });
+  }
+
+  function pushCircle() {
+    setUndo((prevUndo) => {
+      const newUndo = [...prevUndo];
+      const lastElem = newUndo.pop();
+      setCircles((prevCircles) => [...prevCircles, lastElem]);
+      return newUndo;
+    });
+  }
+
+  function deleteAll() {
+    setCircles([]);
+    setUndo([]);
+    setRedo([]);
+  }
+
+  console.log("circles:", circles);
+  console.log("undo:", undo);
   return (
     <>
       <div id="buttons">
-        <button>UNDO</button>
-        <button>REDO</button>
-        <button>RESET</button>
+        <button
+          disabled={circles.length === 0 ? true : false}
+          onClick={popCircle}
+        >
+          UNDO
+        </button>
+        <button
+          disabled={undo.length === 0 ? true : false}
+          onClick={pushCircle}
+        >
+          REDO
+        </button>
+        <button
+          disabled={circles.length === 0 ? true : false}
+          onClick={deleteAll}
+        >
+          RESET
+        </button>
       </div>
       <div id="circles" onClick={handleClick}>
         {circles.length > 0 &&
