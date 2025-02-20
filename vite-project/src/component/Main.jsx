@@ -40,8 +40,6 @@ function Main() {
     setRedo([]);
   }
 
-  console.log("circles:", circles);
-  console.log("undo:", undo);
   return (
     <>
       <div id="buttons">
